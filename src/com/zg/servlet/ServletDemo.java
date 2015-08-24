@@ -2,18 +2,11 @@ package com.zg.servlet;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.zg.io.GetDirect;
 
 /**
  * Servlet implementation class Servlet
@@ -35,18 +28,19 @@ public class ServletDemo extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");
+		request.setCharacterEncoding("UTF-8");
 		String lujing = request.getParameter("lujing");
 		
-		GetDirect gd = new GetDirect();
-		String[] s = gd.listDemo(lujing);
-		
-		List list = new ArrayList<>();
-		for (String ss : s) {
-			System.out.println(ss);
-			list.add(ss);
+		java.io.File f = null;
+		File[] list =null;
+		try {
+			f = new java.io.File(lujing);
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
 		}
-		 request.setAttribute("list", list);
+		
+		 request.setAttribute("list", f.listFiles());
 		 request.getRequestDispatcher("/index.jsp").forward(request, response);
 		
 	}
